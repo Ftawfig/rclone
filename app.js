@@ -11,9 +11,9 @@ app.controller('MainCtrl', [
         $scope.test = 'Hello World!';
         
         $scope.posts = [
-            {title: 'post 1', points: 52},
+            {title: 'Youtube', points: 52, link: "http://www.youtube.com"},
             {title: 'post 2', points: 4},
-            {title: 'post 3', points: 1977},
+            {title: 'Google', points: 1977, link: "http://google.com"},
             {title: 'post 4', points: 42},
             {title: 'post 5', points: 47}
         ];
