@@ -1,0 +1,47 @@
+body {
+    font-family: 'News Cycle';
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Open Sans Condensed';
+}
+
+.posts {
+    text-align: left;
+    margin-bottom: 1.3em;
+}
+
+.flaticon-collapse3 {
+    cursor: pointer;
+    font-weight: bold;
+    color: green;
+}
+
+.flaticon-expand22 {
+    cursor: pointer;
+    font-weight: bold;
+    color: red;
+}
+
+.points {
+    font-weight: bold;
+}
+
+.title {
+    font-style: italic;
+}
+
+.submitPost {
+    width:  80%;
+    padding: 1em;
+
+}
+
+.comment {
+    padding-top: 1em;
+}
+
+.commentText
+{
+    margin-left: 2.5em;
+}

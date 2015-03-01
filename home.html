@@ -1,0 +1,33 @@
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="page-header">
+                        <h1>Posts</h1>
+                    </div>
+                    <div ng-repeat="wat in posts | orderBy: '-points'" class="posts">
+                        <span class="flaticon-collapse3" ng-click="incrementPoints(wat)"></span>
+                        <span class="flaticon-expand22" ng-click="decrementPoints(wat)"></span>
+                        <span class="points">{{wat.points}}</span> - 
+                        <a ng-show="wat.link" href="{{wat.link}}">
+                            <span class="title">{{wat.title}}</span>
+                        </a> 
+                        <span ng-hide="wat.link" class="title">{{wat.title}}</span>
+                        <span><a href="#/post/{{$index}}">Comments</a></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="submitPost">
+                        <form ng-submit="addPost">
+                            <div class="page-header">
+                                <h2>Submit Post</h2>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" ng-model="postTitle" class="form-control" placeholder="Title"></input>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" ng-model="postLink" class="form-control" placeholder="Link"></input>
+                            </div>
+                            <button type="submit" ng-click="addPost()" class="btn btn-primary">Add Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
