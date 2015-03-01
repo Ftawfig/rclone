@@ -4,20 +4,28 @@
 
 var app = angular.module('RClone', ['ui.router']); 
 
+//App configuaration
 app.config([
     '$stateProvider',
     '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) 
     {
+        //Create home state
         $stateProvider.state('home', { url: '/home', templateUrl: 'home.html', controller: 'MainCtrl'});
         
+        //Create navbar state **Currently unused, might be useful in future?
         $stateProvider.state('nav', { url: '/nav', templateUrl: 'navbar.html'});
         
+        //
         $stateProvider.state('posts', { url: '/post/{id}', templateUrl: 'post.html', controller: 'PostCtrl'});
         
+        //Route to home state by default
         $urlRouterProvider.otherwise('home');
+        
+        return;
     }]);
 
+//Posts service. Contains posts array and functions for creating, deleting and voting on posts.
 app.factory('posts', 
     [function() 
     {
@@ -25,7 +33,7 @@ app.factory('posts',
             posts: []
         };
         
-        //Test posts
+        //Populate posts array with test data
         o.posts = [
             {id: 0, title: 'Youtube', points: 52, link: "http://www.youtube.com", comments: []},
             {id: 1, title: 'Reddit', points: 4, link: "http://www.reddit.com", comments: []},
@@ -34,8 +42,10 @@ app.factory('posts',
             {id: 4, title: 'post 5', points: 47, comments: []}
         ];
         
+        //Add post function. Takes postTitle and postLink and creates a new post with 0 points.
         o.addPost = function(postTitle, postLink)
         {
+            //New posts must have a title. A link is optional.
             if(!postTitle || postTitle === '') 
             {
                 return;
@@ -50,7 +60,6 @@ app.factory('posts',
             }
             
             //Add post to array with test comments
-            
             this.posts.push({id: this.posts.length, title: postTitle, points: 0, link: postLink, 
                                 comments: 
                                 [
@@ -62,12 +71,14 @@ app.factory('posts',
             return;
         };
         
+        //Increment the points of a post or comment by 1. Takes the post or comment object as a parameter.
         o.incrementPoints = function(post)
         {
             post.points++;
             return;
         };
         
+        //Decrement the points of a post or comment by 1. Takes the post or comment object as a parameter.
         o.decrementPoints = function(post)
         {
             post.points--;
@@ -81,6 +92,7 @@ app.factory('posts',
             return;
         };
         
+        //Add a comment to a post. 
         o.addComment = function(userName, commentText, postId)
         {
             //userName and commentText may not be empty
@@ -89,6 +101,7 @@ app.factory('posts',
                 return;
             }
             
+            //Add coomment to the post's comment array with starting score of 0 points. 
             this.posts[postId].comments.push({author: userName, text: commentText, points: 0});
             
             return;
@@ -100,13 +113,14 @@ app.factory('posts',
 app.controller('MainCtrl', [
     '$scope',
     'posts',
-    function($scope, posts)
+    function($scope, postService)
     {
-        $scope.posts = posts.posts;
+        //Bind $scope.posts with the posts service array of posts.
+        $scope.posts = postService.posts;
         
         $scope.addPost = function()
         {
-            posts.addPost($scope.postTitle, $scope.postLink);
+            postService.addPost($scope.postTitle, $scope.postLink);
                         
             $scope.postTitle = '';
             $scope.postLink = '';
@@ -116,13 +130,13 @@ app.controller('MainCtrl', [
         
         $scope.incrementPoints = function(post)
         {
-            posts.incrementPoints(post);
+            postService.incrementPoints(post);
             return;
         };
         
         $scope.decrementPoints = function(post)
         {
-            posts.decrementPoints(post);
+            postService.decrementPoints(post);
             return;
         };
         
@@ -140,25 +154,25 @@ app.controller('PostCtrl', [
     '$scope',
     '$stateParams',
     'posts',
-    function($scope, $stateParams, posts) 
+    function($scope, $stateParams, postService) 
     {
-        $scope.post = posts.posts[$stateParams.id];
+        $scope.post = postService.posts[$stateParams.id];
         
         $scope.incrementPoints = function(comment) 
         {
-            posts.incrementPoints(comment);
+            postService.incrementPoints(comment);
             return;
         };
         
         $scope.decrementPoints = function(comment)
         {
-            posts.decrementPoints(comment);
+            postService.decrementPoints(comment);
             return;
         };
         
         $scope.addComment = function()
         {
-            posts.addComment($scope.userName, $scope.commentText, $stateParams.id);
+            postService.addComment($scope.userName, $scope.commentText, $stateParams.id);
             
 //            $scope.userName = '';
 //            $scope.commentText = '';
